@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity 
+@Entity
 @Table(name = "cards")
 public class Card {
 
-    @Id // Primary key 
+    @Id // Primary key
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id; 
+    private UUID id;
 
     @Column(nullable = false)
     private String cardholderName;
@@ -22,15 +22,12 @@ public class Card {
     @Column(nullable = false, updatable = false) // It won't be updated after creation
     private LocalDateTime createdAt;
 
-    // No-argument constructor required by JPA
-    public Card() {
-        this.id = UUID.randomUUID();
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Constructor
     public Card(String cardholderName, BigDecimal initialBalance) {
-        this(); // Initialize id and createdAt
         this.cardholderName = cardholderName;
         this.balance = initialBalance;
     }
@@ -72,10 +69,10 @@ public class Card {
     @Override
     public String toString() {
         return "Card{" +
-               "id=" + id +
-               ", cardholderName='" + cardholderName + '\'' +
-               ", balance=" + balance +
-               ", createdAt=" + createdAt +
-               '}';
+                "id=" + id +
+                ", cardholderName='" + cardholderName + '\'' +
+                ", balance=" + balance +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

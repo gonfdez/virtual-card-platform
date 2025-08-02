@@ -16,7 +16,7 @@ public class Transaction {
     @Column(nullable = false)
     private UUID cardId; // Associated card ID (FK)
 
-    @Enumerated(EnumType.STRING) // Stores the ENUM as String in the DB 
+    @Enumerated(EnumType.STRING) // Stores the ENUM as String in the DB
     @Column(nullable = false)
     private TransactionType type;
 
@@ -26,21 +26,18 @@ public class Transaction {
     @Column(nullable = false, updatable = false) // It won't be updated after creation
     private LocalDateTime createdAt;
 
-    // No-argument constructor required by JPA
-    public Transaction() {
-        this.id = UUID.randomUUID();
+    @PrePersist
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Constructor
     public Transaction(UUID cardId, TransactionType type, BigDecimal amount) {
-        this(); // Initialize id and createdAt
         this.cardId = cardId;
         this.type = type;
         this.amount = amount;
     }
 
-    // Enum for transaction types 
+    // Enum for transaction types
     public enum TransactionType {
         SPEND,
         TOPUP
@@ -91,11 +88,11 @@ public class Transaction {
     @Override
     public String toString() {
         return "Transaction{" +
-               "id=" + id +
-               ", cardId=" + cardId +
-               ", type=" + type +
-               ", amount=" + amount +
-               ", createdAt=" + createdAt +
-               '}';
+                "id=" + id +
+                ", cardId=" + cardId +
+                ", type=" + type +
+                ", amount=" + amount +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
