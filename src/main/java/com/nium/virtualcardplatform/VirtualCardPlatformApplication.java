@@ -1,4 +1,4 @@
-package com.nium.virtual_card_platform;
+package com.nium.virtualcardplatform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

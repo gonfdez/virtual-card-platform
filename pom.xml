@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.nium</groupId>
-	<artifactId>virtual-card-platform</artifactId>
+	<artifactId>virtualcardplatform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>virtual-card-platform</name>
+	<name>virtualcardplatform</name>
 	<description>Virtual Card Issuance Platform</description>
 	<url/>
 	<licenses>

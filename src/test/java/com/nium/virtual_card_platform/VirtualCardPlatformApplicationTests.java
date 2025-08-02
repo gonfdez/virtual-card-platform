@@ -1,4 +1,4 @@
-package com.nium.virtual_card_platform;
+package com.nium.virtualcardplatform;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
