@@ -26,15 +26,17 @@ public class Transaction {
     @Column(nullable = false, updatable = false) // It won't be updated after creation
     private LocalDateTime createdAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    public Transaction() {}
 
     public Transaction(UUID cardId, TransactionType type, BigDecimal amount) {
         this.cardId = cardId;
         this.type = type;
         this.amount = amount;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
     // Enum for transaction types
