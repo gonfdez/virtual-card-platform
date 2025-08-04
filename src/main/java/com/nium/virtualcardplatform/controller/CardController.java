@@ -14,12 +14,11 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/cards") // Base path for all endpoints in this controller
+@RequestMapping("/cards")
 public class CardController {
 
     private final CardService cardService;
 
-    // Dependency Injection
     @Autowired
     public CardController(CardService cardService) {
         this.cardService = cardService;
@@ -80,8 +79,16 @@ public class CardController {
             return new ResponseEntity<>(updatedCard, HttpStatus.OK); // 200 OK
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Card not found
-        } catch (Exception e) { // Catch any other unexpected errors from service layer
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Internal Server Error
+        } catch (RuntimeException e) {
+            // Check if this is a concurrency-related error
+            if (e.getMessage() != null && e.getMessage().contains("concurrent modifications")) {
+                // Return 409 Conflict for concurrency issues that couldn't be resolved
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+            // Other runtime exceptions should be treated as server errors
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -105,8 +112,16 @@ public class CardController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Card not found
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // 400 Bad Request for insufficient balance
+        } catch (RuntimeException e) {
+            // Check if this is a concurrency-related error
+            if (e.getMessage() != null && e.getMessage().contains("concurrent modifications")) {
+                // Return 409 Conflict for concurrency issues that couldn't be resolved
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+            // Other runtime exceptions should be treated as server errors
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 500 Internal Server Error
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
