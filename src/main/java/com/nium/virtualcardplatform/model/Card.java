@@ -9,7 +9,7 @@ import java.util.UUID;
 @Table(name = "cards")
 public class Card {
 
-    @Id // Primary key
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
@@ -19,8 +19,11 @@ public class Card {
     @Column(nullable = false)
     private BigDecimal balance;
 
-    @Column(nullable = false, updatable = false) // It won't be updated after creation
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    
+    @Version
+    private Long version;
 
     public Card() {}
     
@@ -68,6 +71,14 @@ public class Card {
         this.createdAt = createdAt;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+    
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+    
     @Override
     public String toString() {
         return "Card{" +
@@ -75,6 +86,7 @@ public class Card {
                 ", cardholderName='" + cardholderName + '\'' +
                 ", balance=" + balance +
                 ", createdAt=" + createdAt +
+                ", version=" + version +
                 '}';
     }
 }
